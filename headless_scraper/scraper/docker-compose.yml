@@ -1,8 +1,15 @@
-version: '3'
+version: '3.7'
 
 services:
-  selenium:
-    build: .
+
+  hub:
+    image: selenium/hub:3.141.59
     ports:
-        - 4000:4000
-    privileged: true
+      - 4444:4444
+
+  chrome:
+    image: selenium/node-chrome:3.141.59
+    depends_on:
+      - hub
+    environment:
+      - HUB_HOST=hub
