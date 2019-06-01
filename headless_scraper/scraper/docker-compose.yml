@@ -1,15 +1,22 @@
-version: '3.7'
+#Docker-compose version
+version: '3'
 
+#services
 services:
 
+#Selenium Hub instance
   hub:
-    image: selenium/hub:3.141.59
+    image: selenium/hub:3
     ports:
       - 4444:4444
 
+#Chrome node instance
   chrome:
-    image: selenium/node-chrome:3.141.59
-    depends_on:
+    image: selenium/node-chrome:3
+    links:
       - hub
-    environment:
-      - HUB_HOST=hub
+  
+  # web:
+  #   build: .
+  #   ports:
+  #    - "5000:5000"
