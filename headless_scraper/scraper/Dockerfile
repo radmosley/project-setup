@@ -1,5 +1,13 @@
-FROM selenium/standalone-chrome:3.141.59-neon
-COPY requirements.txt .
-RUN pip3 install requirements.txt
-COPY . .
-EXPOSE 4444
+#Install Headless browser with linux kernel
+FROM python:3
+
+#Install python
+
+#Work directory
+WORKDIR /app
+#install python dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+#Copy files into directory
+COPY . ./app
