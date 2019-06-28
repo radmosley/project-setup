@@ -4,7 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, StaleElementReferenceException
 import csv
 import time
 
@@ -34,9 +34,10 @@ print('driver created')
 #Go to Bureau Landing page Transaction Search page
 driver.get(url)
 
-print('page loaded')
+print('getting page')
 
 def getLinks():
+
     internal_links = []
     external_links = []
     index = 0
@@ -45,6 +46,7 @@ def getLinks():
     # while index != len(internal_links)-1:
     #Test variable
     while index != internal_links:
+
         #Links contain all the a anchors referenced on the first page the driver is pointed to
         #For every link that on the current page if the link has an href then add that link to the saved links
         # main_content = driver.find_element_by_id('main-content')
@@ -58,25 +60,28 @@ def getLinks():
             for x in main_content.find_elements_by_tag_name('a'):
                 links.append(x)
         except NoSuchElementException:
-            continue
+            print('No Main content')
+            pass
 
+        #add bureau_nav to links list
         try:
             bureau_nav = driver.find_element_by_id('bureau-nav')
             for z in bureau_nav.find_elements_by_tag_name('a'):
                 links.append(x)
                 
         except NoSuchElementException:
-            continue
-
-        #add bureau_nav to links list
-        for z in bureau_nav.find_elements_by_tag_name('a'):
-            links.append(z)
+            print('No Bureau Nav')
+            pass
 
         #clean out all empty and null values
         for link in links:
-            if link.get_attribute('href'):
-                savedLinks.append(link.get_attribute('href'))
- 
+            try:
+                if link.get_attribute('href'):
+                    savedLinks.append(link.get_attribute('href'))
+            except StaleElementReferenceException:
+                pass
+        print('No Links')
+
         #For every link in the savedlinks section check if the link is an external or internal link,
         # check if the link already exist in one of the list and add it to the responding list
         for a in savedLinks:
@@ -90,13 +95,26 @@ def getLinks():
         print(len(internal_links))
         print('External Links Saved')
         print(len(external_links))
-        driver.get(internal_links[index])
-        print('Page {}'.format(internal_links[index]))
+            
+        try:
+            index += 1
+            delay = 5
+            myElem = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.ID, 'main-content')))
+            driver.get(internal_links[index])
+            print('index = {}'.format(index))
+            print('Page {}'.format(internal_links[index]))
+
+        except TimeoutException:
+            print('Removing Link')
+            print(internal_links[index])
+            internal_links.remove(internal_links[index])
+            continue
+            
+
         #Move to the next item in the list
-        index += 1
+        
         #Prompt the user that the following link is being checked and wait 5 seconds before starting the process over again
-        print('index = {}'.format(index))
-        driver.implicitly_wait(5)
+        
         #After the while loop is broken write the responding list to a csv file titled with the year month and day 
         # / hours and minutes the process was ran
     return [internal_links, external_links]
