@@ -4,7 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import csv
 import time
 
@@ -44,11 +44,35 @@ def getLinks():
     #At the end of the function the index is increased by one to ensure all links that get collected are reviewed.
     # while index != len(internal_links)-1:
     #Test variable
-    while index != 100:
+    while index != internal_links:
         #Links contain all the a anchors referenced on the first page the driver is pointed to
         #For every link that on the current page if the link has an href then add that link to the saved links
-        links = driver.find_elements_by_tag_name('a')
+        # main_content = driver.find_element_by_id('main-content')
+        # bureau_nav = driver.find_element_by_id('bureau-nav')
+        links = []
         savedLinks = []
+
+        #add main_content to links list
+        try:
+            main_content = driver.find_element_by_id('main-content')
+            for x in main_content.find_elements_by_tag_name('a'):
+                links.append(x)
+        except NoSuchElementException:
+            continue
+
+        try:
+            bureau_nav = driver.find_element_by_id('bureau-nav')
+            for z in bureau_nav.find_elements_by_tag_name('a'):
+                links.append(x)
+                
+        except NoSuchElementException:
+            continue
+
+        #add bureau_nav to links list
+        for z in bureau_nav.find_elements_by_tag_name('a'):
+            links.append(z)
+
+        #clean out all empty and null values
         for link in links:
             if link.get_attribute('href'):
                 savedLinks.append(link.get_attribute('href'))
@@ -87,7 +111,7 @@ with internal:
     writer = csv.writer(internal, delimiter=',')
     writer.writerow(['Internal Links'])
     for item in files[0]:
-        writer.writerows([files[0]])
+        writer.writerow([item])
 
 external = open('external-{}.csv'.format(filename), 'w', newline='')
 with external:
