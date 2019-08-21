@@ -53,21 +53,38 @@ def getLinks():
         # bureau_nav = driver.find_element_by_id('bureau-nav')
         links = []
         savedLinks = []
+        documents = []
 
         #add main_content to links list
         try:
             main_content = driver.find_element_by_id('main-content')
             for x in main_content.find_elements_by_tag_name('a'):
-                links.append(x)
+                if x.find_elements_by_tag_name('h1'):
+                    xt = x.find_elements_by_tag_name('h1')
+                    links.append([x, xt.text])
+                else:
+                    pass
+
         except NoSuchElementException:
             print('No Main content')
+            pass
+        
+        #add side nav links to links list
+        try:
+            main_content = driver.find_element_by_id('section-nav')
+            for x in main_content.find_elements_by_tag_name('a'):
+                links.append(x)
+        except NoSuchElementException:
+            documents.append(x)
+            print('No Sections Nav content')
             pass
 
         #add bureau_nav to links list
         try:
             bureau_nav = driver.find_element_by_id('bureau-nav')
             for z in bureau_nav.find_elements_by_tag_name('a'):
-                links.append(x)
+                if z.text:
+                    links.append([z, z.text])
                 
         except NoSuchElementException:
             print('No Bureau Nav')
@@ -77,7 +94,7 @@ def getLinks():
         for link in links:
             try:
                 if link.get_attribute('href'):
-                    savedLinks.append(link.get_attribute('href'))
+                    savedLinks.append([link.get_attribute('href'), link])
             except StaleElementReferenceException:
                 pass
         print('No Links')
@@ -138,6 +155,13 @@ with external:
     for item in files[1]:
         writer.writerow([item])
 
-#// TODO: find a method that would check if an item is a document, webpage or external link
+#// TODO: Create a link search class that has a search method, an analysis method and a export method
+#// TODO: Testing suite for linkSearch tool
+#// TODO: add the heading of the page in a dictionary with the url as the key and the heading the value {link.url: heading, }
+#// TODO: Check if the url is a redirect and remove from list if it is
+#// TODO: Check if the page is an xml page
+#// TODO: check if source is a file and place in a seperate list
+#// TODO: Add perameter for adding short id into the link
+#// TODO: useful content visualizations
 
 
