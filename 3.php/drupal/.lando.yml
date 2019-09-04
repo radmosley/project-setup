@@ -1,6 +1,0 @@
-name: the-village
-recipe: drupal8
-config:
-  webroot: .
-  database: postgres:9.6.12
-  

@@ -1,23 +1,47 @@
 version: '3.1'
 
 services:
-  drupal:
-    image: drupal:8-apache
-    ports:
-      - 8080:80
-
-    volumes:
-      - /var/www/html/modules
-      - /var/www/html/profiles
-      - /var/www/html/themes
-      # this takes advantage of the feature in Docker that a new anonymous
-      # volume (which is what we're creating here) will be initialized with the
-      # existing content of the image at the same location
-      - /var/www/html/sites
-    restart: always
-
-  postgres:
+  db:
     image: postgres:10
     environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
     restart: always
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    container_name: drupal_codebase
+    depends_on:
+      - db
+    ports:
+      - "8100:80"
+    stdin_open: true
+    tty: true
+
+  # drupal:
+  #   image: drupal:8-apache
+  #   ports:
+  #     - 8080:80
+  #   volumes:
+  #     - /var/www/html/modules
+  #     - /var/www/html/profiles
+  #     - /var/www/html/themes
+  #     # this takes advantage of the feature in Docker that a new anonymous
+  #     # volume (which is what we're creating here) will be initialized with the
+  #     # existing content of the image at the same location
+  #     - /var/www/html/sites
+  #   restart: always
+
+  # postgres:
+  #   image: postgres:10
+  #   environment:
+  #     POSTGRES_PASSWORD: example
+  #   restart: always
+  
+  # drush:
+  #   image: drush/drush
+  #   links:
+  #     - postgres
