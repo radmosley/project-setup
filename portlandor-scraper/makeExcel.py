@@ -30,16 +30,33 @@ worksheet.write('C8', 'Type')
 worksheet.write('D8', 'Subtype')
 worksheet.write('E8', 'Legacy Path(s)')
 worksheet.write('F8', 'Note')
+y = 9
 
-with open('internal-20190620-2223.csv') as csvfile:
-    linkreader = csv.reader(csvfile, delimiter= ',')
-    for x in linkreader:
-        y = 9
-        count = 0
-        worksheet.write('E{}'.format(y), count)
+with open('external', newline='') as externalfile:
+    extreader = csv.reader(csvfile, delimiter= ',')
+    external = []
+    extcount = 1
+    for x in extreader:
+        external.append(x)
+    while extcount != len(external) - 1:
+        worksheet.write('E{}'.format(y), str(external[extcount][0]))
         y += 1
         count += 1
-        print('Number of links loaded {}'.format(count))
+    print('Done!')
+
+with open('internal', newline='') as internalfile:
+    intreader = csv.reader(internalfile, delimiter= ',')
+    internal = []
+    intcount = 1
+    for x in intreader:
+        internal.append(x)
+    while intcount != len(internal) - 1:
+        worksheet.write('E{}'.format(y), str(internal[intcount][0]))
+        y += 1
+        count += 1
+    print('Done!')
+
+        
 
 workbook.close()
 
