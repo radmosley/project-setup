@@ -1,0 +1,52 @@
+version: '3.4'
+
+services:
+#Database image
+  db_development:
+    image: postgres
+    ports:
+      - 5439:5432
+    environment:
+      - POSTGRES_PASSWORD
+      - DATABASE_OWNER
+      - TEAM_PASSWORD
+
+#Django Rest Framework
+  api_development:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: api_development
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    command: python manage.py runserver
+    depends_on:
+      - db_development
+    environment:
+      - PROJECT_NAME
+      - DEBUG=True
+      - POSTGRES_USER
+      - POSTGRES_NAME
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - POSTGRES_PASSWORD
+      - DJANGO_SECRET_KEY
+
+#Selenium Hub
+  hub:
+    image: selenium/hub:3
+    ports:
+      - 4444:4444
+    
+#Selenium Chrome Node
+  chrome:
+    image: selenium/node-chrome:3.141.59-oxygen
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - hub
+    environment:
+      - HUB_HOST=hub
+      - HUB_PORT=4444
