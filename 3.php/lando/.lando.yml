@@ -1,0 +1,12 @@
+name: the-village
+recipe: drupal8
+config:
+  webroot: ./code
+  drush: "*"
+
+services:
+  appserver:
+    build:
+      - composer install
+
+

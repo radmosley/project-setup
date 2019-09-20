@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  php:
+    image: wodby/drupal-php:$PHP_TAG
+    container_name: "${PROJECT_NAME}_php"
+    environment:    
+      DB_HOST: $DB_HOST
+      DB_USER: $DB_USER
+      DB_PASSWORD: $DB_PASSWORD
+      DB_NAME: $DB_NAME
+      DB_DRIVER: $DB_DRIVER
+      PHP_FPM_USER: wodby
+      PHP_FPM_GROUP: wodby
+    volumes:
+      - 'drupal_sync:/var/www/html/:nocopy'
+
+  postgres:
+    image: wodby/postgres:$POSTGRES_TAG
+    container_name: "${PROJECT_NAME}_postgres"
+    stop_grace_period: 30s
+    environment:
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $DB_NAME
+      POSTGRES_USER: $DB_USER
+    volumes:
+      - 'postgres_sync:/var/lib/postgresql/data:nocopy'
+  
+  nginx:
+    image: wodby/nginx:$NGINX_TAG
+    container_name: "${PROJECT_NAME}_nginx"
+    depends_on:
+      - php
+    environment:
+      NGINX_STATIC_OPEN_FILE_CACHE: "off"
+      NGINX_ERROR_LOG_LEVEL: debug
+      NGINX_BACKEND_HOST: php
+      NGINX_SERVER_ROOT: /var/www/html/web
+      NGINX_VHOST_PRESET: $NGINX_VHOST_PRESET
+#      NGINX_DRUPAL_FILE_PROXY_URL: http://example.com
+    volumes:
+      - 'drupal_sync:/var/www/html:nocopy'
+# For macOS users (https://wodby.com/stacks/drupal/docs/local/docker-for-mac/)
+#      - ./:/var/www/html:cached # User-guided caching
+#      - docker-sync:/var/www/html # Docker-sync
+    labels:
+      - 'traefik.backend=${PROJECT_NAME}_nginx'
+      - 'traefik.port=80'
+      - 'traefik.frontend.rule=Host:${PROJECT_BASE_URL}'
+
+volumes:
+  drupal_sync:
+    external: true
+  postgres_sync:
+    external: true
