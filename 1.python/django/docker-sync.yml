@@ -1,0 +1,9 @@
+syncs:
+  
+  django-sync:
+    src: "./api"
+    sync_strategy: "nativeos"
+  
+  postgres-sync:
+    src: "./api"
+    sync_strategy: "nativeos"

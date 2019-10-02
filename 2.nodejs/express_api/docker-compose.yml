@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  express_api:
+    build: .
+    depends_on: 
+      - postgres
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app/
+      - /app/node_modules
+    command: "sh -c 'npm install && npm start'"
+
+  postgres:
+    image: postgres:10.4
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db
+
+    volumes:
+      - ./artifacts:/app/artifacts
