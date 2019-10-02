@@ -4,6 +4,6 @@ To use the images in this repository cd into or download the folder for the envi
 ```
 docker-compose up --build
 ```
-1. [Python]
-1. [Node.js]
-1. [PHP]
+1. [Python](../#)
+1. [Node.js](../#)
+1. [PHP](../#)
