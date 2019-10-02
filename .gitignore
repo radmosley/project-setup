@@ -1,5 +1,0 @@
-.gitattributes
-/venv
-.DS_Store
-*/node_module/
-*/modules/
