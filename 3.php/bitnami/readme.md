@@ -1,3 +1,5 @@
 # Bitnami Docker Drupal Setup
-Download drupal to a directory and name directory "code"
-Create directory named artifact and place database backup
+Install Drupal by running the following command
+```
+composer create-project drupal-composer/drupal-project:8.x-dev code --no-interaction
+```

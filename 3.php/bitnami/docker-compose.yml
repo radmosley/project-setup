@@ -9,6 +9,7 @@ services:
       - MARIADB_DATABASE=bitnami_drupal
     volumes:
       - 'mariadb_data:/bitnami'
+
   drupal:
     image: 'bitnami/drupal:8'
     environment:
@@ -17,6 +18,7 @@ services:
       - DRUPAL_DATABASE_USER=bn_drupal
       - DRUPAL_DATABASE_NAME=bitnami_drupal
       - ALLOW_EMPTY_PASSWORD=yes
+      - COMPOSER_ALLOW_SUPERUSER=true
     ports:
       - '80:80'
       - '443:443'
@@ -24,6 +26,7 @@ services:
       - 'drupal_data:/bitnami'
     depends_on:
       - mariadb
+
 volumes:
   mariadb_data:
     driver: local
