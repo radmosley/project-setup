@@ -1,0 +1,11 @@
+version: "2"
+
+syncs:
+  
+  app_sync:
+    src: "./api"
+    sync_strategy: "nativeos"
+  
+  artifacts_sync:
+    src: "./artifacts"
+    sync_strategy: "nativeos"
