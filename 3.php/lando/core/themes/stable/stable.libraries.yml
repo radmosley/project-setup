@@ -1,4 +1,0 @@
-drupal.user:
-  version: VERSION
-  js:
-    js/user.theme.js: {}
