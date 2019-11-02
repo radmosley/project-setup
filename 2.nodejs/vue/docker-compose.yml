@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+
+  vue-fe:
+    container_name: vue-fe
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/code'
+      - '/code/node_modules'
+    ports:
+      - '8081:8080'
