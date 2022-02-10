@@ -3,14 +3,14 @@ version: "3"
 services:
   express_api:
     build: .
-    depends_on: 
+    depends_on:
       - postgres
     ports:
       - "8080:8080"
     volumes:
-      - .:/app/
-      - /app/node_modules
-    command: "sh -c 'npm install && npm start'"
+      - ./:/usr/src/app/
+      - /usr/src/app/node_modules
+    command: "sh -c 'npm start'"
 
   postgres:
     image: postgres:10.4

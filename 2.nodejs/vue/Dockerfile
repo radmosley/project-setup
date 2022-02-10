@@ -1,15 +1,15 @@
 # base image
-FROM node:12.2.0-alpine
+FROM node:14-alpine
 
 # set working directory
-WORKDIR /code
+WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
-ENV PATH /code/node_modules/.bin:$PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
-COPY . /code
-RUN npm install
-
+COPY package.json /app/package.json
+RUN yarn install
+COPY . /app/
 # start app
-CMD ["npm", "run", "serve"]
+CMD ["yarn", "serve"]

@@ -1,8 +1,0 @@
-syncs:
-  mariadb_data:
-    src: './artifacts'
-    sync_strategy: 'nativeosx'
-
-  drupal_data:
-    src: './code'
-    sync_strategy: 'nativeosx'
