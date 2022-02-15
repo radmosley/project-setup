@@ -1,5 +1,7 @@
-2.nodejs/express_api
-2.nodejs/puppet_scraper
-/3.php/
-/4.databases/
+/databases/
+/fullstack/
+/*/nodejs/puppet_scraper
+/*/nodejs/vue
+/*/php/
+/*/python/flask
 README.md

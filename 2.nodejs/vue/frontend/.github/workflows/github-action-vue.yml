@@ -1,9 +1,0 @@
-name: GitHub Actions Demo
-on: [push]
-jobs:
-  build-vue-app:
-    runs-on: ubuntu-latest
-    container: node:17-alpine
-    services:
-      vue:
-        image: radbydesign/vue:v0.1
