@@ -6,12 +6,13 @@ This repo consist of easy to configure development environments to begin project
 
 - radbydesign/vue
 - radbydesign/django_api
-- radbydesign/express_api
-- radbydesign/basic_app
+  <!-- - radbydesign/express_api -->
+  <!-- - radbydesign/basic_app -->
 
 To build images:
-`cd /desired/directory`
-`docker-compose up`
+
+- `cd /desired/directory`
+- `docker-compose up`
 
 ## Docker
 
