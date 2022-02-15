@@ -8,8 +8,8 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
-COPY package.json /app/package.json
+COPY /frontend/package.json /app/package.json
 RUN yarn install
-COPY . /app/
+COPY /frontend /app/
 # start app
 CMD ["yarn", "serve"]
