@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from environ import Env
+
+env = Env()
+# reading .env file
+env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +25,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'nzdum)8!q+ju@4%v2fljwjf05nmfko40-kjq3=z=v1^hfj*rge'
+# SECRET_KEY = 'nzdum)8!q+ju@4%v2fljwjf05nmfko40-kjq3=z=v1^hfj*rge'
+SECRET_KEY = env('SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -80,9 +86,9 @@ DATABASES = {
         # 'NAME': os.environ.get('POSTGRES_NAME'),
         # 'USER': os.environ.get('POSTGRES_USER'),
         # 'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
         'HOST': 'db',
         'PORT': 5432,
 

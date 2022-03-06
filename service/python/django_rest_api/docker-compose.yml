@@ -10,10 +10,10 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   web:
-    image: radbydesign/django-api:latest
-    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python manage.py runserver 0.0.0.0:8000'
+    image: radbydesign/django-api:v0.4
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python manage.py runserver 0.0.0.0:8000 && python manage.py migrate'
     volumes:
-      - ./api:/code
+      - ./backend:/app
     ports:
       - "8000:8000"
     environment:
